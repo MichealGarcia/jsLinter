@@ -8,28 +8,70 @@ let unnecessaryWords = ['extremely', 'literally', 'actually'];
 
 
 let storyWords = story.split(" ");
-
+let updatedStory = ''
 
 console.log(storyWords.length);
 
 
-var runLinter = function (inputWords, badWords) {
-    var outputArray = [];
-    badWords.forEach(function (badWord) {
-        storyWords.forEach(function (word) {
-            if (!badWords.includes(word)) {
-                outputArray.push(word);
-            }
-        }
-        );
+// Create a word remover
+
+var linter = function (inputText, removeText) {
+
+    inputText = inputText.filter(function (word) {
+        return !removeText.includes(word);
     });
-    return outputArray.join(" ")
+
+    // outputs
+    return inputText;
+};
+
+var removeUnneccessaryWords = linter(storyWords, unnecessaryWords);
+
+// var removeOverusedWords = linter(removeUnneccessaryWords, overusedWords);
+
+updatedStory = removeUnneccessaryWords.join(" ");
+console.log(updatedStory, removeUnneccessaryWords.length);
+
+// Count overused words
+
+var removeGoodWords = function (inputText, removeText) {
+
+    inputText = inputText.filter(function (word) {
+        return removeText.includes(word);
+    });
+
+    // outputs
+    return inputText;
+};
+
+var countoverUsed = removeGoodWords(storyWords, overusedWords);
+
+const output = countoverUsed.reduce(function (acc, currentWord) {
+    if (acc[currentWord]) {
+        acc[currentWord] += 1;
+    } else {
+        acc[currentWord] = 1;
+    }
+    return acc;
+}, {});
+
+console.log(output);
+
+// sentence count
+
+var countSentences = function (inputText) {
+    inputText = inputText.split(" ")
+    let count = 0;
+    inputText.forEach(function (element) {
+        if (element.includes('.') || element.includes('!') || element.includes('?')) {
+            return count += 1;
+        }
+    });
+    return count
 };
 
 
 
-removeUnnecessaryWords = runLinter(storyWords, unnecessaryWords).split(" ");
+console.log(`There are ${countSentences(updatedStory)} sentences.`);
 
-console.log(removeUnnecessaryWords);
-
-y = runLinter(removeUnnecessaryWords, overusedWords);
+// 
